@@ -3,8 +3,8 @@
   <channel>
     <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
     <description>This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.</description>
-    <link>http://wifi.pps.univ-paris-diderot.fr/~olden/</link>
-    <atom:link href="http://wifi.pps.univ-paris-diderot.fr/~olden/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://ofabre.github.io/</link>
+    <atom:link href="http://ofabre.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>My Own Mesh Network</title>
@@ -74,8 +74,8 @@ on the same computer, but this network is my goal for this week. You will have
 news next week about it.&lt;/p&gt;
 </description>
         <pubDate>Mon, 21 Jul 2014 18:23:12 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/</guid>
+        <link>http://ofabre.github.io/babel/mesh/network/2014/07/21/My-own-mesh-network/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/babel/mesh/network/2014/07/21/My-own-mesh-network/</guid>
       </item>
     
       <item>
@@ -163,8 +163,8 @@ of Matthieu, such as the source-sensitive requests but before that, I will
 improve my commits in order to have a clean git tree.&lt;/p&gt;
 </description>
         <pubDate>Tue, 15 Jul 2014 17:25:12 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</guid>
+        <link>http://ofabre.github.io/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</guid>
       </item>
     
       <item>
@@ -296,8 +296,8 @@ achieve and makes me more aware of the work to do.  I will be rereding
 Matthieu’s work and with this new point of view, will merge it in Babel.&lt;/p&gt;
 </description>
         <pubDate>Mon, 07 Jul 2014 12:46:12 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</guid>
+        <link>http://ofabre.github.io/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</guid>
       </item>
     
       <item>
@@ -320,8 +320,8 @@ week.&lt;/p&gt;
 &lt;p&gt;See you soon&lt;/p&gt;
 </description>
         <pubDate>Mon, 30 Jun 2014 11:48:07 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</guid>
+        <link>http://ofabre.github.io/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</guid>
       </item>
     
       <item>
@@ -349,8 +349,8 @@ their work is really useful in what I am doing in Quagga.&lt;/p&gt;
 information on my work really soon !&lt;/p&gt;
 </description>
         <pubDate>Mon, 23 Jun 2014 10:46:23 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</guid>
+        <link>http://ofabre.github.io/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</guid>
       </item>
     
       <item>
@@ -382,8 +382,8 @@ be able to get that work done.&lt;/p&gt;
 &lt;p&gt;Stay tuned and see you soon&lt;/p&gt;
 </description>
         <pubDate>Tue, 17 Jun 2014 12:22:36 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/patch/git/2014/06/17/application-of-the-patches/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/patch/git/2014/06/17/application-of-the-patches/</guid>
+        <link>http://ofabre.github.io/babel/patch/git/2014/06/17/application-of-the-patches/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/babel/patch/git/2014/06/17/application-of-the-patches/</guid>
       </item>
     
       <item>
@@ -423,8 +423,8 @@ other is quite exciting and I am eager to pursue my work on this project.&lt;/p&
 &lt;p&gt;Olden&lt;/p&gt;
 </description>
         <pubDate>Wed, 11 Jun 2014 12:22:36 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</guid>
+        <link>http://ofabre.github.io/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</guid>
       </item>
     
       <item>
@@ -453,8 +453,8 @@ the source-sensitive version of zebra.&lt;/p&gt;
 &lt;p&gt;I will give you news really soon about that merge.&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Jun 2014 14:55:07 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</guid>
+        <link>http://ofabre.github.io/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</guid>
       </item>
     
       <item>
@@ -508,8 +508,8 @@ it.&lt;/p&gt;
 &lt;p&gt;Olden&lt;/p&gt;
 </description>
         <pubDate>Mon, 26 May 2014 23:46:12 +0200</pubDate>
-        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/</link>
-        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/</guid>
+        <link>http://ofabre.github.io/quagga/source-sensitive/routing/2014/05/26/first-post/</link>
+        <guid isPermaLink="true">http://ofabre.github.io/quagga/source-sensitive/routing/2014/05/26/first-post/</guid>
       </item>
     
   </channel>
