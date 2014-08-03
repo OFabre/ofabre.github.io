@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <title>Source-Sensitive Routing in Zebra</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.">
-    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/">
+    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/~olden/css/main.css">
@@ -53,60 +53,141 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Source-Sensitive Routing in Zebra</h1>
+    <p class="meta">Jul 7, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 21, 2014</span>
-        <a class="post-link" href="/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/">My Own Mesh Network</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 15, 2014</span>
-        <a class="post-link" href="/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/">Source-Sensitive Routing in Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 7, 2014</span>
-        <a class="post-link" href="/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">Source-Sensitive Routing in Zebra</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 30, 2014</span>
-        <a class="post-link" href="/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">Getting Zebra to work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 23, 2014</span>
-        <a class="post-link" href="/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/">Rewriting Functions</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 17, 2014</span>
-        <a class="post-link" href="/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">Patching Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 11, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/">The Quagga Sources and My Work Inside of It</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 3, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">Begin of Work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 26, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">Quagga and Source Sensitive Routing</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>Hello everyone,</p>
 
-  <p class="rss-subscribe">subscribe <a href="/~olden/feed.xml">via RSS</a></p>
+<p>As I told you last week, I installed source-sensitive routes in Zebra. With the
+help of Juliusz and Matthieu, I installed two tunnels between two computer
+using the stand-alone source-sensitive version of Quagga, and added
+source-sensitive routes with the Zebra version of David.  By setting different
+sources to the packets, I achieved to get packets on both of the tunnels one
+after another. Here is a shell capture of what I obtained with those tests :</p>
+
+<pre><code>ip addr add 192.168.4.89 dev wlan0
+ip tunnel add t0 mode gre local 192.168.4.89 remote 192.168.4.87 ttl 255 dev wlan0
+ip link set t0 up
+ip addr add 192.168.4.89 dev t0
+ip -6 addr add fdbf:e793:18b3::1:1 dev t0
+ip addr add 192.168.4.90 dev wlan0
+ip tunnel add t1 mode gre local 192.168.4.90 remote 192.168.4.88 ttl 255 dev wlan0
+ip link set t1 up
+ip addr add 192.168.4.90 dev t1
+ip -6 addr add fdbf:e793:18b3::1:2 dev t1
+
+./zebra
+2014/07/04 17:21:30 ZEBRA: Zebra 0.99.22 starting: vty@2601
+./installRoutes
+
+--- zebra shell ---
+ipv6 route fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:1/128 fe80::5efe:c0a8:459 t0
+ipv6 route fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:2/128 fe80::5efe:c0a8:45a t1
+show ipv6 route
+Codes: K - kernel route, C - connected, S - static, R - RIPng,
+       O - OSPFv6, I - IS-IS, B - BGP, A - Babel,
+              &gt; - selected route, * - FIB route
+
+	      C&gt;* ::1/128 is directly connected, lo
+	      C&gt;* fdbf:e793:18b3::1:1/128 is directly connected, t0
+	      C&gt;* fdbf:e793:18b3::1:2/128 is directly connected, t1
+	      S&gt;* fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:1/128 [1/0] 
+      				  via fe80::5efe:c0a8:459, t0
+	      S&gt;* fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:2/128 [1/0] 
+      				  via fe80::5efe:c0a8:45a, t1
+	      C * fe80::/64 is directly connected, t1
+	      C * fe80::/64 is directly connected, t0
+	      C&gt;* fe80::/64 is directly connected, wlan0
+--- end zebra shell ---
+
+./pingOneTwo
+Fri Jul  4 17:21:35 CEST 2014
+Sending packet from fdbf:e793:18b3::1:2:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 1
+Message sent
+Fri Jul  4 17:21:36 CEST 2014
+Sending packet from fdbf:e793:18b3::1:1:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 2
+
+/*
+ * Send a message every second to one and another of the tunnels
+ */
+
+Message sent
+Fri Jul  4 17:21:44 CEST 2014
+Sending packet from fdbf:e793:18b3::1:1:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 2
+Message sent
+Fri Jul  4 17:21:45 CEST 2014
+Sending packet from fdbf:e793:18b3::1:2:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 1
+Message sent
+^C2014/07/04 17:21:46 ZEBRA: Terminating on signal
+2014/07/04 17:21:46 ZEBRA: IRDP: Received shutdown notification.
+</code></pre>
+
+<p>I chose different length in order to see the way of each packet more clearly and here is what I got
+on each of the tunnels :</p>
+
+<pre><code>$ tcpdump -ni t0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on t0, link-type LINUX_SLL (Linux cooked), capture size 65535 bytes
+17:21:36.873680 IP6 fdbf:e793:18b3::1:1.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:38.901037 IP6 fdbf:e793:18b3::1:1.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:40.926176 IP6 fdbf:e793:18b3::1:1.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:42.951015 IP6 fdbf:e793:18b3::1:1.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:44.975136 IP6 fdbf:e793:18b3::1:1.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+^C
+5 packets captured
+5 packets received by filter
+0 packets dropped by kernel
+
+
+$ sudo tcpdump -ni t1
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on t1, link-type LINUX_SLL (Linux cooked), capture size 65535 bytes
+17:21:35.862581 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:37.888372 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:39.913553 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:41.938632 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:43.963581 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:45.987613 IP6 fdbf:e793:18b3::1:2.12000 &gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+^C
+6 packets captured
+6 packets received by filter
+0 packets dropped by kernel
+</code></pre>
+
+<p>We can see that both of the tunnels have an independant traffic depending of
+the source. Packets can take different path according to something else than
+their destination.</p>
+
+<p>Now that I have tested and got good feedback from Zebra, I can get back to the
+Babel patching. This experiment gave me a good overview of what I have to
+achieve and makes me more aware of the work to do.  I will be rereding
+Matthieu’s work and with this new point of view, will merge it in Babel.</p>
+
+  </article>
 
 </div>
 

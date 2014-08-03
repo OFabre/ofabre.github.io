@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <title>Begin of Work</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.">
-    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/">
+    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/~olden/css/main.css">
@@ -53,60 +53,38 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Begin of Work</h1>
+    <p class="meta">Jun 3, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 21, 2014</span>
-        <a class="post-link" href="/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/">My Own Mesh Network</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 15, 2014</span>
-        <a class="post-link" href="/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/">Source-Sensitive Routing in Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 7, 2014</span>
-        <a class="post-link" href="/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">Source-Sensitive Routing in Zebra</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 30, 2014</span>
-        <a class="post-link" href="/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">Getting Zebra to work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 23, 2014</span>
-        <a class="post-link" href="/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/">Rewriting Functions</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 17, 2014</span>
-        <a class="post-link" href="/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">Patching Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 11, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/">The Quagga Sources and My Work Inside of It</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 3, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">Begin of Work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 26, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">Quagga and Source Sensitive Routing</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>Hello everyone,</p>
 
-  <p class="rss-subscribe">subscribe <a href="/~olden/feed.xml">via RSS</a></p>
+<p>My exams are finally over, and I am now able to start my work on Quagga. I
+created my own git repository <a href="olden@ariane.wifi.pps.univ-paris-diderot.fr:~/depot/quaggasrcdest/">here (git
+address)</a>.</p>
+
+<p>I started from a branch of the <a href="http://www.pps.univ-paris-diderot.fr/~boutier/index.html">Matthieu
+Boutier</a>’s
+<a href="https://github.com/boutier/quagga-merge">repository (git address)</a>, ready for
+merging and applied the patches of the github <a href="https://github.com/opensourcerouting/quagga/tree/srcdest">Open Source Routing
+repository</a> by David
+Lamparter and Christian Franke. By doing so, the ipv6 zebra layer of the quagga
+suite is ready. </p>
+
+<p>I am following with attention the branch on the zebra layer and I will be
+merging all changes appearing on this branch. Matthieu informed me that he has
+been working on a version of source-sensitive routing in the stand-alone
+babeld. I will therefore try to merge his work (available
+<a href="http://git.wifi.pps.univ-paris-diderot.fr/?p=babels.git;a=summary">here</a>) with
+the source-sensitive version of zebra.</p>
+
+<p>I will give you news really soon about that merge.</p>
+
+  </article>
 
 </div>
 

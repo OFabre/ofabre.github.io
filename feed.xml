@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <description>This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.</description>
+    <link>http://wifi.pps.univ-paris-diderot.fr/~olden/</link>
+    <atom:link href="http://wifi.pps.univ-paris-diderot.fr/~olden/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>My Own Mesh Network</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;Last week, I played a little with babel and managed to export source-sensitive
+routes and use them. It was mainly the work of Matthieu, as I used his routers
+to manage my packets, but I got nice routes for two packets with the same
+destination :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ mtr 2a00:1450:4007:80a::1004 --address 2001:41d0:1:f19f:868f:69ff:fef0:338e -t
+
+                                My traceroute  [v0.82]
+martin (::)                                                  Tue Jul 15 20:26:29 2014
+Keys:  Help   Display mode   Restart statistics   Order of fields   quit
+                                             Packets               Pings
+ Host                                      Loss%   Snt   Last   Avg  Best  Wrst StDev
+ 1. 2001:41d0:1:f19f:21b:b1ff:fe83:8d32     0.0%   117    3.3   1.2   0.7  11.2   1.2
+ 2. 2001:41d0:1:f19f:e246:9aff:fe4e:912e   37.6%   117    2.1   2.4   1.7   8.0   1.0
+ 3. 2001:41d0:1:f19f::1                    36.8%   117    9.3   9.5   7.6  25.8   3.2
+ 4. 2001:41d0:1:f1ff:ff:ff:ff:fd            7.8%   117   63.6  11.9   8.0  73.1   8.7
+ 5. 2001:41d0::6b1                         41.0%   117   11.7  11.9   8.3  61.9   7.1
+ 6. 2001:41d0::b82                         23.1%   117   13.9  14.7  12.3  43.4   4.1
+ 7. 2001:41d0::16f                         96.6%   117   44.9  22.6  13.8  44.9  14.9
+ 8. 2001:41d0::832                          0.0%   117   13.2  16.0  12.0  62.0   6.2
+ 9. 2001:4860::1:0:4a3a                     0.0%   117   15.7  21.3  12.6  39.8   8.1
+10. 2001:4860:0:1::66f                      0.0%   117   16.0  14.6  12.5  34.0   3.1
+11. 2a00:1450:4007:80a::1004                0.0%   117   12.8  14.2  12.3  28.4   2.7
+
+
+$ mtr 2a00:1450:4007:80a::1004 --address 2001:660:3301:9208::01de -t
+
+                                           My traceroute  [v0.82]
+martin (::)                                                    Tue Jul 15 20:27:50 2014
+Keys:  Help   Display mode   Restart statistics   Order of fields   quit
+                                               Packets               Pings
+ Host                                        Loss%   Snt   Last   Avg  Best  Wrst StDev
+ 1. 2001:5c0:1505:6b00:21b:b1ff:fe83:8d32     0.6%   165    1.9   1.2   0.7   5.5   0.8
+    2001:5c0:1505:6b00:21b:b1ff:fe83:8d3b
+ 2. 2001:660:3301:9208:e246:9aff:fe4e:912e    1.2%   165    2.0   2.3   1.7   8.0   0.9
+ 3. 2001:660:3301:9202::ac17:2ffe             1.8%   165    2.2   2.6   1.8  18.7   1.6
+ 4. 2001:660:3301:80fc::4                     0.0%   165    2.5   3.3   2.2  27.9   2.7
+ 5. 2001:660:2401:2001::1                     0.0%   165    2.6   4.0   2.3  40.9   5.1
+ 6. 2001:660:3300:1004:0:82:0:2200           44.2%   165    2.7   3.4   2.5  14.6   1.6
+ 7. 2001:660:7903:124:1::1                   61.0%   165   33.7   8.9   3.3  70.0  11.8
+ 8. 2001:660:7903:3:2::2                      9.1%   165    3.0   4.4   2.8  47.1   5.4
+ 9. 2001:660:7904:10:2::2                     0.0%   165    3.1   4.2   2.9  25.7   3.2
+10. 2001:4860::1:0:4a3a                       0.0%   164    3.5   9.3   3.3  58.7   7.8
+11. 2001:4860:0:1::66f                        0.0%   164    5.4   4.4   3.5  14.6   1.6
+12. 2a00:1450:4007:80a::1004                  0.0%   164    3.8   4.0   3.2  16.7   1.5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This test was accomplished because Matthieu installed source-sensitive routes
+on the routers. My goal now is to create my own scenario where I can test
+source-sensitive routing in Babel. Here is the network plan I will reproduce :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ariane.wifi.pps.univ-paris-diderot.fr/~olden/momn.jpg&quot; alt=&quot;My Own Mesh Network&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Juliusz suggested me to add the node B in order to avoid some potential errors
+in the future. It has something to do with the mecanism of Babel and I did not
+deeply understand the possible issue. I will try only with A first and then add
+B. The goal is to see packets going via N1 or N2 according to their source, 
+with traceroute.&lt;/p&gt;
+
+&lt;p&gt;I am facing right now software issues, such as installing two wifi transmitters
+on the same computer, but this network is my goal for this week. You will have
+news next week about it.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 21 Jul 2014 18:23:12 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/</guid>
+      </item>
+    
+      <item>
+        <title>Source-Sensitive Routing in Babel</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;Here we are, I had the first results of source-sensitive in Babel itself. After
+installing them in Zebra, we went to the next level and installed routes
+announced by Babel.  &lt;/p&gt;
+
+&lt;p&gt;Even though I had to rewrite most of the code, the work of Matthieu was of great
+help in the process of handling source in each of the functions.&lt;/p&gt;
+
+&lt;p&gt;Here are a few shell capture of the result :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# show ipv6 route
+Codes: K - kernel route, C - connected, S - static, R - RIPng,
+       O - OSPFv6, I - IS-IS, B - BGP, A - Babel,
+       &amp;gt; - selected route, * - FIB route
+
+A&amp;gt;* ::/0 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* ::/0 from ::/56 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+C&amp;gt;* ::1/128 is directly connected, lo
+A&amp;gt;* 2001:5c0:1505:6b00:21b:b1ff:fe83:8d32/128 [95/0] via fe80::21b:b1ff:fe83:8d32, wlan0, 00:00:06
+A&amp;gt;* 2001:5c0:1505:6b00:21b:b1ff:fe83:8d3b/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:35
+A&amp;gt;* 2001:5c0:1505:6b00:21b:b1ff:fe83:8d3f/128 [95/0] via fe80::21b:b1ff:fe83:8d32, wlan0, 00:00:06
+A&amp;gt;* 2001:5c0:1505:6b00:21b:b1ff:fe83:8db3/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:16
+A&amp;gt;* 2001:5c0:1505:6b00:a021:b7ff:feba:df57/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:5c0:1505:6b00:e091:f5ff:fecc:7a93/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:5c0:1505:6b00:e246:9aff:fe4e:91e2/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:660:3301:9202::ac17:248a/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:660:3301:9208:e246:9aff:fe4e:912e/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f::1/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:21b:b1ff:fe83:8d32/128 [95/0] via fe80::21b:b1ff:fe83:8d32, wlan0, 00:00:06
+A&amp;gt;* 2001:41d0:1:f19f:21b:b1ff:fe83:8d3b/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:35
+A&amp;gt;* 2001:41d0:1:f19f:21b:b1ff:fe83:8d3f/128 [95/0] via fe80::21b:b1ff:fe83:8d32, wlan0, 00:00:06
+A&amp;gt;* 2001:41d0:1:f19f:21b:b1ff:fe83:8db3/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:16
+A&amp;gt;* 2001:41d0:1:f19f:a021:b7ff:feba:df57/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:b6b5:2fff:feb8:35c3/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:e091:f5ff:fecc:7a93/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:e246:9aff:fe4e:912e/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:e246:9aff:fe4e:91e2/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:26
+A&amp;gt;* 2001:41d0:1:f19f:e291:f5ff:fecc:7a00/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:10
+A&amp;gt;* 2001:41d0:1:f19f:e291:f5ff:fecc:7abd/128 [95/0] via fe80::21b:b1ff:fe83:8d3b, wlan0, 00:00:16
+C&amp;gt;* fdbf:e793:18b3::2/128 is directly connected, wlan0
+C&amp;gt;* fe80::/64 is directly connected, wlan0
+
+
+
+$ watch ip -6 route show
+default from ::/56 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:21b:b1ff:fe83:8d32 via fe80::21b:b1ff:fe83:8d32 dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:21b:b1ff:fe83:8d3b via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:21b:b1ff:fe83:8d3f via fe80::21b:b1ff:fe83:8d3f dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:21b:b1ff:fe83:8db3 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:a021:b7ff:feba:df57 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:e091:f5ff:fecc:7a93 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:5c0:1505:6b00:e246:9aff:fe4e:91e2 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:660:3301:9202::ac17:248a via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:660:3301:9208:e246:9aff:fe4e:912e via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f::1 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:21b:b1ff:fe83:8d32 via fe80::21b:b1ff:fe83:8d32 dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:21b:b1ff:fe83:8d3b via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:21b:b1ff:fe83:8d3f via fe80::21b:b1ff:fe83:8d3f dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:21b:b1ff:fe83:8db3 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:868f:69ff:fef0:338e dev eth0  proto kernel  metric 256
+2001:41d0:1:f19f:a021:b7ff:feba:df57 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:b6b5:2fff:feb8:35c3 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:e091:f5ff:fecc:7a93 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:e246:9aff:fe4e:912e via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:e246:9aff:fe4e:91e2 via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:e291:f5ff:fecc:7a00 via fe80::21b:b1ff:fe83:8d3f dev wlan0  proto zebra  metric 1024
+2001:41d0:1:f19f:e291:f5ff:fecc:7abd via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+fdbf:e793:18b3::2 dev wlan0  proto kernel  metric 256
+fe80::/64 dev eth0  proto kernel  metric 256
+fe80::/64 dev wlan0  proto kernel  metric 256
+default via fe80::21b:b1ff:fe83:8d3b dev wlan0  proto zebra  metric 1024
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, there is a source sensitive route installed in Zebra, and this 
+route is visible in the kernel aswell.&lt;/p&gt;
+
+&lt;p&gt;The work on Babel is going pretty well. I still have to apply some modifications
+of Matthieu, such as the source-sensitive requests but before that, I will 
+improve my commits in order to have a clean git tree.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 15 Jul 2014 17:25:12 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/</guid>
+      </item>
+    
+      <item>
+        <title>Source-Sensitive Routing in Zebra</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;As I told you last week, I installed source-sensitive routes in Zebra. With the
+help of Juliusz and Matthieu, I installed two tunnels between two computer
+using the stand-alone source-sensitive version of Quagga, and added
+source-sensitive routes with the Zebra version of David.  By setting different
+sources to the packets, I achieved to get packets on both of the tunnels one
+after another. Here is a shell capture of what I obtained with those tests :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ip addr add 192.168.4.89 dev wlan0
+ip tunnel add t0 mode gre local 192.168.4.89 remote 192.168.4.87 ttl 255 dev wlan0
+ip link set t0 up
+ip addr add 192.168.4.89 dev t0
+ip -6 addr add fdbf:e793:18b3::1:1 dev t0
+ip addr add 192.168.4.90 dev wlan0
+ip tunnel add t1 mode gre local 192.168.4.90 remote 192.168.4.88 ttl 255 dev wlan0
+ip link set t1 up
+ip addr add 192.168.4.90 dev t1
+ip -6 addr add fdbf:e793:18b3::1:2 dev t1
+
+./zebra
+2014/07/04 17:21:30 ZEBRA: Zebra 0.99.22 starting: vty@2601
+./installRoutes
+
+--- zebra shell ---
+ipv6 route fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:1/128 fe80::5efe:c0a8:459 t0
+ipv6 route fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:2/128 fe80::5efe:c0a8:45a t1
+show ipv6 route
+Codes: K - kernel route, C - connected, S - static, R - RIPng,
+       O - OSPFv6, I - IS-IS, B - BGP, A - Babel,
+              &amp;gt; - selected route, * - FIB route
+
+	      C&amp;gt;* ::1/128 is directly connected, lo
+	      C&amp;gt;* fdbf:e793:18b3::1:1/128 is directly connected, t0
+	      C&amp;gt;* fdbf:e793:18b3::1:2/128 is directly connected, t1
+	      S&amp;gt;* fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:1/128 [1/0] 
+      				  via fe80::5efe:c0a8:459, t0
+	      S&amp;gt;* fdbf:e793:18b3::2:1/128 from fdbf:e793:18b3::1:2/128 [1/0] 
+      				  via fe80::5efe:c0a8:45a, t1
+	      C * fe80::/64 is directly connected, t1
+	      C * fe80::/64 is directly connected, t0
+	      C&amp;gt;* fe80::/64 is directly connected, wlan0
+--- end zebra shell ---
+
+./pingOneTwo
+Fri Jul  4 17:21:35 CEST 2014
+Sending packet from fdbf:e793:18b3::1:2:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 1
+Message sent
+Fri Jul  4 17:21:36 CEST 2014
+Sending packet from fdbf:e793:18b3::1:1:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 2
+
+/*
+ * Send a message every second to one and another of the tunnels
+ */
+
+Message sent
+Fri Jul  4 17:21:44 CEST 2014
+Sending packet from fdbf:e793:18b3::1:1:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 2
+Message sent
+Fri Jul  4 17:21:45 CEST 2014
+Sending packet from fdbf:e793:18b3::1:2:(12000)
+to fdbf:e793:18b3::2:1:(12000)
+length 1
+Message sent
+^C2014/07/04 17:21:46 ZEBRA: Terminating on signal
+2014/07/04 17:21:46 ZEBRA: IRDP: Received shutdown notification.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I chose different length in order to see the way of each packet more clearly and here is what I got
+on each of the tunnels :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tcpdump -ni t0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on t0, link-type LINUX_SLL (Linux cooked), capture size 65535 bytes
+17:21:36.873680 IP6 fdbf:e793:18b3::1:1.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:38.901037 IP6 fdbf:e793:18b3::1:1.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:40.926176 IP6 fdbf:e793:18b3::1:1.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:42.951015 IP6 fdbf:e793:18b3::1:1.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+17:21:44.975136 IP6 fdbf:e793:18b3::1:1.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 2
+^C
+5 packets captured
+5 packets received by filter
+0 packets dropped by kernel
+
+
+$ sudo tcpdump -ni t1
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on t1, link-type LINUX_SLL (Linux cooked), capture size 65535 bytes
+17:21:35.862581 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:37.888372 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:39.913553 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:41.938632 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:43.963581 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+17:21:45.987613 IP6 fdbf:e793:18b3::1:2.12000 &amp;gt; fdbf:e793:18b3::2:1.12000: 
+UDP, length 1
+^C
+6 packets captured
+6 packets received by filter
+0 packets dropped by kernel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can see that both of the tunnels have an independant traffic depending of
+the source. Packets can take different path according to something else than
+their destination.&lt;/p&gt;
+
+&lt;p&gt;Now that I have tested and got good feedback from Zebra, I can get back to the
+Babel patching. This experiment gave me a good overview of what I have to
+achieve and makes me more aware of the work to do.  I will be rereding
+Matthieu’s work and with this new point of view, will merge it in Babel.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 07 Jul 2014 12:46:12 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/</guid>
+      </item>
+    
+      <item>
+        <title>Getting Zebra to work</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;This week, I managed to apply some patches from Matthieu. After a little bit of
+work to call functions properly and correct a few merging errors, I compiled
+babel without errors. The structures are therefore ready to host sources in the
+ipv6 routing protocol. With the help of Matthieu, we tried installing a
+source-sensitive route in Babel, but it didn’t work.&lt;/p&gt;
+
+&lt;p&gt;That’s why we directly tried to use zebra to install source-sensitive routes.
+Unfortunately, that didn’t work either. The routes are present in zebra but not
+installed in the kernel. This is a strange bug I will try to correct during the
+week.&lt;/p&gt;
+
+&lt;p&gt;I will keep you informed about the progress on that work.&lt;/p&gt;
+
+&lt;p&gt;See you soon&lt;/p&gt;
+</description>
+        <pubDate>Mon, 30 Jun 2014 11:48:07 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/</guid>
+      </item>
+    
+      <item>
+        <title>Rewriting Functions</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;This week will be the one of the midterm evaluation. I feel like I just began
+my work, and it’s already time to make my first sum-up. You will therefore find
+more on the &lt;a href=&quot;http://blog.freifunk.net/&quot;&gt;freifunk blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I basically rewrote most of the function appearing in the Quagga suite in order
+to handle a source address in addition of the one that the functions were
+already using. This gives me a structure for the rest of the work.  I patched a
+lot of function including message.c, xroute.c, and more.  I also added a few
+output lines in the debug messages, but the next step will be to handle the
+source correctly.&lt;/p&gt;
+
+&lt;p&gt;This was quite a lot of work, but I feel that with all this new arguments, the
+functions are ready to handle source quite nicely.&lt;/p&gt;
+
+&lt;p&gt;I would like to thank the people who have worked on zebra once more, because
+their work is really useful in what I am doing in Quagga.&lt;/p&gt;
+
+&lt;p&gt;I invite you to read more on the freifunk blog and will give you more
+information on my work really soon !&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Jun 2014 10:46:23 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/</guid>
+      </item>
+    
+      <item>
+        <title>Patching Babel</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;Last week was a quite interesting one. I am getting in the heart of the
+project.  I used openVPN to connect to the university’s network. There, I have
+seen my new node appearing on
+&lt;a href=&quot;http://babelweb.wifi.pps.univ-paris-diderot.fr&quot;&gt;babelweb&lt;/a&gt;. I could also see,
+using mytraceroute, the convergence of the routes. The response time optimised
+at each iteration before getting stable at a quite low packets loss and ping.
+Connecting to the mesh network of the university will make me able to test my
+modifications on the babel code.&lt;/p&gt;
+
+&lt;p&gt;On another topic, I managed to get a mesh network running between two
+computers. I then used ip route to add a route between the two computers. When
+I saw this new ad-hoc network going on, I achieved to transfer files and
+connect via ssh from a computer to another. This experience was quite
+interesting and really makes me eager to continue my work on Quagga.&lt;/p&gt;
+
+&lt;p&gt;As I said last time, I am still merging the work of Matthieu in my branch. As I
+understand more and more the working of the procol and the code, the patches of
+the branch of Matthieu seem clearer. I will therefore focus on that patching
+for the rest of the week.  I know that I have been talking about that merge for
+a long time, but now, it seems like I have nothing else to work on, so I will
+be able to get that work done.&lt;/p&gt;
+
+&lt;p&gt;Stay tuned and see you soon&lt;/p&gt;
+</description>
+        <pubDate>Tue, 17 Jun 2014 12:22:36 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/babel/patch/git/2014/06/17/application-of-the-patches/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/babel/patch/git/2014/06/17/application-of-the-patches/</guid>
+      </item>
+    
+      <item>
+        <title>The Quagga Sources and My Work Inside of It</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;Last week, I had a meeting with Juliusz Chroboczek who explained me in details
+the routing protocol of Babel. I understand the protocol itself better now.
+This little talk gave me more information on the abstract part of the routing
+protocol but I still need a little time to understand the source code.&lt;/p&gt;
+
+&lt;p&gt;As I do not need to care about the underlayer, that zebra handles already, I
+can focus on using higher level functions. &lt;/p&gt;
+
+&lt;p&gt;As far as the merge of the code of Matthieu on source-sensitive routing in
+babel over the source-sensitive version of zebra is concerned, I am facing
+challenges as the version of Matthieu doesn’t use the zebra functions yet. I am
+having a meeting with him today and I will try to get more information about
+the functions I should override/keep on both sides.&lt;/p&gt;
+
+&lt;p&gt;Juliusz and Matthieu also advice me to install a VPN in order to connect to a
+proper mesh network from anywhere. I will do my best to install OpenVPN with
+their help and will be then able to test my work more properly.&lt;/p&gt;
+
+&lt;p&gt;On another topic, I also managed to install my first route between two
+computers. There were some communication between the two computers, but I will
+need a little more work in order to fully understand the mechanisms of a mesh
+network.&lt;/p&gt;
+
+&lt;p&gt;My next goal will be to connect to the mesh network of the Université Paris
+Diderot via VPN and try to merge the code of Matthieu inside the already
+existing code.&lt;/p&gt;
+
+&lt;p&gt;Seeing the source code on one hand and the practical use of mesh network on the
+other is quite exciting and I am eager to pursue my work on this project.&lt;/p&gt;
+
+&lt;p&gt;Olden&lt;/p&gt;
+</description>
+        <pubDate>Wed, 11 Jun 2014 12:22:36 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/</guid>
+      </item>
+    
+      <item>
+        <title>Begin of Work</title>
+        <description>&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;My exams are finally over, and I am now able to start my work on Quagga. I
+created my own git repository &lt;a href=&quot;olden@ariane.wifi.pps.univ-paris-diderot.fr:~/depot/quaggasrcdest/&quot;&gt;here (git
+address)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I started from a branch of the &lt;a href=&quot;http://www.pps.univ-paris-diderot.fr/~boutier/index.html&quot;&gt;Matthieu
+Boutier&lt;/a&gt;’s
+&lt;a href=&quot;https://github.com/boutier/quagga-merge&quot;&gt;repository (git address)&lt;/a&gt;, ready for
+merging and applied the patches of the github &lt;a href=&quot;https://github.com/opensourcerouting/quagga/tree/srcdest&quot;&gt;Open Source Routing
+repository&lt;/a&gt; by David
+Lamparter and Christian Franke. By doing so, the ipv6 zebra layer of the quagga
+suite is ready. &lt;/p&gt;
+
+&lt;p&gt;I am following with attention the branch on the zebra layer and I will be
+merging all changes appearing on this branch. Matthieu informed me that he has
+been working on a version of source-sensitive routing in the stand-alone
+babeld. I will therefore try to merge his work (available
+&lt;a href=&quot;http://git.wifi.pps.univ-paris-diderot.fr/?p=babels.git;a=summary&quot;&gt;here&lt;/a&gt;) with
+the source-sensitive version of zebra.&lt;/p&gt;
+
+&lt;p&gt;I will give you news really soon about that merge.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 03 Jun 2014 14:55:07 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/</guid>
+      </item>
+    
+      <item>
+        <title>Quagga and Source Sensitive Routing</title>
+        <description>&lt;p&gt;The most used routing method is the “next-hop” method. Every router sends a
+packet to the next router according to its routing table. A router just takes
+the packet and forwards it to another router, etc. No differentiation between
+packets with the same destination are made.&lt;/p&gt;
+
+&lt;p&gt;What we would like to achieve would be a way to differentiate packets with the
+same destination but different source for the routing decision. Each router
+would then be free to choose the route he would like a packet to use. This
+little modification could enable multi-homed networks quite easily.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.freifunk.net/&quot;&gt;Freifunk&lt;/a&gt; gave me the opportunity to work on this
+project during the Google Summer of Code. I am really grateful for this
+opportunity, and will do my best to implement source-sensitive routing in
+Quagga and in the Babel version of Quagga during this time.&lt;/p&gt;
+
+&lt;p&gt;For those of you who want more details about the project, here are some more
+specifications for you :&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://tools.ietf.org/html/draft-boutier-homenet-source-specific-routing&quot;&gt;Source-sensitive
+routing&lt;/a&gt;
+(or &lt;a href=&quot;http://tools.ietf.org/html/draft-troan-homenet-sadr&quot;&gt;SADR&lt;/a&gt;) consist in
+routing packets depending on the source address of the packets in addition to
+the destination.  It solves a number of routing problems, especially in
+multihomed edge &lt;a href=&quot;http://tools.ietf.org/html/draft-baker-rtgwg-src-dst-routing-use-cases&quot;&gt;networks&lt;/a&gt; , and
+may lead to better performance by providing more routes to higher layers.  For
+example, MultiPath TCP at the transport layer is able to use these &lt;a href=&quot;http://multipath-tcp.org/pmwiki.php/Users/ConfigureRouting&quot;&gt;multiple
+routes&lt;/a&gt; (&lt;a href=&quot;http://www.pps.univ-paris-diderot.fr/~boutier/source-specific-routing.html&quot;&gt;paper&lt;/a&gt;)
+.  Source-sensitive routing is implemented in an experimental branch of the
+&lt;a href=&quot;http://git.wifi.pps.univ-paris-diderot.fr/?p=babels.git;a=summary&quot;&gt;babeld stand-alone daemon&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.nongnu.org/quagga&quot;&gt;Quagga&lt;/a&gt; is a routing suite written in C
+providing implementations of network routing protocols for Unix platforms.
+Quagga’s common layer (“zebrad”) abstracts away the dirty details of low-level
+networking, allowing all routing protocols implemented in Quagga to use a
+common API, independent of the underlying operating system.  This common layer
+does not currently implement source-sensitive routing.&lt;/p&gt;
+
+&lt;p&gt;The goal of this project is to provide source-sensitive routing in the Quagga
+routing suite for the netlink interface.  The student need to understand and
+modify the communication protocol between zebrad and the other daemons, change
+the local RIB of Quagga, and change the interaction between zebrad and the
+Linux kernel.&lt;/p&gt;
+
+&lt;p&gt;Here is my humble participation to the Babel project and I hope you will like
+it.&lt;/p&gt;
+
+&lt;p&gt;Olden&lt;/p&gt;
+</description>
+        <pubDate>Mon, 26 May 2014 23:46:12 +0200</pubDate>
+        <link>http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/</link>
+        <guid isPermaLink="true">http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/</guid>
+      </item>
+    
+  </channel>
+</rss>

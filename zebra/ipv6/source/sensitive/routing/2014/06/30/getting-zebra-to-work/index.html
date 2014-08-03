@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <title>Getting Zebra to work</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.">
-    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/">
+    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/~olden/css/main.css">
@@ -53,60 +53,32 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Getting Zebra to work</h1>
+    <p class="meta">Jun 30, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 21, 2014</span>
-        <a class="post-link" href="/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/">My Own Mesh Network</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 15, 2014</span>
-        <a class="post-link" href="/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/">Source-Sensitive Routing in Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 7, 2014</span>
-        <a class="post-link" href="/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">Source-Sensitive Routing in Zebra</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 30, 2014</span>
-        <a class="post-link" href="/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">Getting Zebra to work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 23, 2014</span>
-        <a class="post-link" href="/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/">Rewriting Functions</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 17, 2014</span>
-        <a class="post-link" href="/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">Patching Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 11, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/">The Quagga Sources and My Work Inside of It</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 3, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">Begin of Work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 26, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">Quagga and Source Sensitive Routing</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>Hello everyone,</p>
 
-  <p class="rss-subscribe">subscribe <a href="/~olden/feed.xml">via RSS</a></p>
+<p>This week, I managed to apply some patches from Matthieu. After a little bit of
+work to call functions properly and correct a few merging errors, I compiled
+babel without errors. The structures are therefore ready to host sources in the
+ipv6 routing protocol. With the help of Matthieu, we tried installing a
+source-sensitive route in Babel, but it didn’t work.</p>
+
+<p>That’s why we directly tried to use zebra to install source-sensitive routes.
+Unfortunately, that didn’t work either. The routes are present in zebra but not
+installed in the kernel. This is a strange bug I will try to correct during the
+week.</p>
+
+<p>I will keep you informed about the progress on that work.</p>
+
+<p>See you soon</p>
+
+  </article>
 
 </div>
 

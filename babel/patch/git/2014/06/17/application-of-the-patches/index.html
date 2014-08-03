@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <title>Patching Babel</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.">
-    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/">
+    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/~olden/css/main.css">
@@ -53,60 +53,41 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Patching Babel</h1>
+    <p class="meta">Jun 17, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 21, 2014</span>
-        <a class="post-link" href="/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/">My Own Mesh Network</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 15, 2014</span>
-        <a class="post-link" href="/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/">Source-Sensitive Routing in Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 7, 2014</span>
-        <a class="post-link" href="/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">Source-Sensitive Routing in Zebra</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 30, 2014</span>
-        <a class="post-link" href="/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">Getting Zebra to work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 23, 2014</span>
-        <a class="post-link" href="/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/">Rewriting Functions</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 17, 2014</span>
-        <a class="post-link" href="/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">Patching Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 11, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/">The Quagga Sources and My Work Inside of It</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 3, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">Begin of Work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 26, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">Quagga and Source Sensitive Routing</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>Hello everyone,</p>
 
-  <p class="rss-subscribe">subscribe <a href="/~olden/feed.xml">via RSS</a></p>
+<p>Last week was a quite interesting one. I am getting in the heart of the
+project.  I used openVPN to connect to the university’s network. There, I have
+seen my new node appearing on
+<a href="http://babelweb.wifi.pps.univ-paris-diderot.fr">babelweb</a>. I could also see,
+using mytraceroute, the convergence of the routes. The response time optimised
+at each iteration before getting stable at a quite low packets loss and ping.
+Connecting to the mesh network of the university will make me able to test my
+modifications on the babel code.</p>
+
+<p>On another topic, I managed to get a mesh network running between two
+computers. I then used ip route to add a route between the two computers. When
+I saw this new ad-hoc network going on, I achieved to transfer files and
+connect via ssh from a computer to another. This experience was quite
+interesting and really makes me eager to continue my work on Quagga.</p>
+
+<p>As I said last time, I am still merging the work of Matthieu in my branch. As I
+understand more and more the working of the procol and the code, the patches of
+the branch of Matthieu seem clearer. I will therefore focus on that patching
+for the rest of the week.  I know that I have been talking about that merge for
+a long time, but now, it seems like I have nothing else to work on, so I will
+be able to get that work done.</p>
+
+<p>Stay tuned and see you soon</p>
+
+  </article>
 
 </div>
 

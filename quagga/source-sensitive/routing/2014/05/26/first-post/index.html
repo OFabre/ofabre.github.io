@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GSOC 2014 : Source-Sensitive Routing in Babel</title>
+    <title>Quagga and Source Sensitive Routing</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This blog will keep you informed on the progress of my work about source sensitive routing in Babel, a free and open source routing protocol.">
-    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/">
+    <link rel="canonical" href="http://wifi.pps.univ-paris-diderot.fr/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/~olden/css/main.css">
@@ -53,60 +53,63 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Quagga and Source Sensitive Routing</h1>
+    <p class="meta">May 26, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 21, 2014</span>
-        <a class="post-link" href="/~olden/babel/mesh/network/2014/07/21/My-own-mesh-network/">My Own Mesh Network</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 15, 2014</span>
-        <a class="post-link" href="/~olden/babel/source-sensitive/routing/2014/07/15/First-results-in-Babel/">Source-Sensitive Routing in Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 7, 2014</span>
-        <a class="post-link" href="/~olden/zebra/source-sensitive/routing/2014/07/07/source-sensitive-in-Zebra/">Source-Sensitive Routing in Zebra</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 30, 2014</span>
-        <a class="post-link" href="/~olden/zebra/ipv6/source/sensitive/routing/2014/06/30/getting-zebra-to-work/">Getting Zebra to work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 23, 2014</span>
-        <a class="post-link" href="/~olden/babel/source/sensitive/prototype/rewrite/2014/06/23/midterm-evaluation/">Rewriting Functions</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 17, 2014</span>
-        <a class="post-link" href="/~olden/babel/patch/git/2014/06/17/application-of-the-patches/">Patching Babel</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 11, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/11/understanding-of-the-quagga-protocol/">The Quagga Sources and My Work Inside of It</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 3, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/06/03/begin-of-work/">Begin of Work</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 26, 2014</span>
-        <a class="post-link" href="/~olden/quagga/source-sensitive/routing/2014/05/26/first-post/">Quagga and Source Sensitive Routing</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>The most used routing method is the “next-hop” method. Every router sends a
+packet to the next router according to its routing table. A router just takes
+the packet and forwards it to another router, etc. No differentiation between
+packets with the same destination are made.</p>
 
-  <p class="rss-subscribe">subscribe <a href="/~olden/feed.xml">via RSS</a></p>
+<p>What we would like to achieve would be a way to differentiate packets with the
+same destination but different source for the routing decision. Each router
+would then be free to choose the route he would like a packet to use. This
+little modification could enable multi-homed networks quite easily.</p>
+
+<p><a href="http://www.freifunk.net/">Freifunk</a> gave me the opportunity to work on this
+project during the Google Summer of Code. I am really grateful for this
+opportunity, and will do my best to implement source-sensitive routing in
+Quagga and in the Babel version of Quagga during this time.</p>
+
+<p>For those of you who want more details about the project, here are some more
+specifications for you :</p>
+
+<p><a href="http://tools.ietf.org/html/draft-boutier-homenet-source-specific-routing">Source-sensitive
+routing</a>
+(or <a href="http://tools.ietf.org/html/draft-troan-homenet-sadr">SADR</a>) consist in
+routing packets depending on the source address of the packets in addition to
+the destination.  It solves a number of routing problems, especially in
+multihomed edge <a href="http://tools.ietf.org/html/draft-baker-rtgwg-src-dst-routing-use-cases">networks</a> , and
+may lead to better performance by providing more routes to higher layers.  For
+example, MultiPath TCP at the transport layer is able to use these <a href="http://multipath-tcp.org/pmwiki.php/Users/ConfigureRouting">multiple
+routes</a> (<a href="http://www.pps.univ-paris-diderot.fr/~boutier/source-specific-routing.html">paper</a>)
+.  Source-sensitive routing is implemented in an experimental branch of the
+<a href="http://git.wifi.pps.univ-paris-diderot.fr/?p=babels.git;a=summary">babeld stand-alone daemon</a>.</p>
+
+<p><a href="http://www.nongnu.org/quagga">Quagga</a> is a routing suite written in C
+providing implementations of network routing protocols for Unix platforms.
+Quagga’s common layer (“zebrad”) abstracts away the dirty details of low-level
+networking, allowing all routing protocols implemented in Quagga to use a
+common API, independent of the underlying operating system.  This common layer
+does not currently implement source-sensitive routing.</p>
+
+<p>The goal of this project is to provide source-sensitive routing in the Quagga
+routing suite for the netlink interface.  The student need to understand and
+modify the communication protocol between zebrad and the other daemons, change
+the local RIB of Quagga, and change the interaction between zebrad and the
+Linux kernel.</p>
+
+<p>Here is my humble participation to the Babel project and I hope you will like
+it.</p>
+
+<p>Olden</p>
+
+  </article>
 
 </div>
 
